@@ -1,0 +1,212 @@
+@charset "UTF-8";
+
+* { 
+	margin:0;
+	padding:0;
+}
+
+body {
+	min-width: 20em;
+	display:block;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+	font-family:Brezel Grotesk,Helvetica Neue,Helvetica,Arial,sans-serif; 
+}
+
+.footer {
+	display:block;
+	box-sizing:border-box;
+	padding:0;
+	padding-top:40px;
+	background-color:#2c4162;
+}
+.footer_container {
+	width:100%;
+	max-width: min(100%,65em);
+	display:block;
+	box-sizing:border-box;
+	align-items:center;
+	padding:0 .625em;
+	margin:0 auto;
+} 
+
+/*site_map*/
+.site_map {
+	display:flex;
+	box-sizing:border-box;
+	justify-content:flex-start;
+}
+.site_map_container {
+	display:flex;
+	box-sizing:border-box;
+	align-items:flex-start;
+	justify-content:space-around;
+	padding-bottom:40px;
+}
+.nav_column {
+	width:100%;
+	display:block;
+	box-sizing:border-box;
+	position:relative;
+	marign:0 4px;
+	padding-top:54px;
+}
+.nav_column h6 {
+	display:block;
+	box-sizing:border-box;
+	position:absolute;
+    top:0;
+    color:#FFF;
+    font-size:13px;
+    font-weight:600;
+    margin:1.3em 0 .7em;
+}
+.nav_column ul {
+	display:block;
+	box-sizing:border-box;
+	list-style:none;
+    margin:0;
+    padding:0;
+}
+.nav_column ul li {
+	display:list-item;
+	box-sizing:border-box;
+	list-style:none;
+}
+.nav_column ul li a {
+	width:245px;
+    display: block;
+	box-sizing:border-box;
+    margin-bottom:8px;
+    color:#FFF;
+	font-size:12px;
+    font-weight: 400;
+    line-height:16px;
+    text-decoration:none;
+}
+
+/*privacy*/
+.privacy {
+	display:block;
+	box-sizing:border-box;
+}
+.privacy_container {
+	display:flex;
+	box-sizing:border-box;
+	justify-content:center;
+	padding:40px 0 16px 0;
+}
+.privacy_container a {
+	cursor:pointer;
+	color:rgb(145,161,186);
+	box-sizing:border-box;
+	font-size:12px;
+	font-weight:400;
+	line-height:18px;
+	margin:0 12px;
+	text-decoration:none;
+}
+.privacy_container span {
+	cursor:pointer;
+	color:rgb(145,161,186);
+	box-sizing:border-box;
+	font-size:12px;
+	font-weight:400;
+	line-height:18px;
+	margin:0 12px;
+	text-decoration:none;
+}
+
+/*description*/
+.description {
+	display:block;
+	box-sizing:border-box;
+}
+.description p {
+	color:rgb(145,161,186);
+	display:block;
+	box-sizing:border-box;
+	font-size:10px;
+	font-weight:400;
+	line-height:14px;
+	padding-bottom:12px;
+    margin-bottom:0;
+    text-align:center;
+}
+
+/*group_logo*/
+.group_logo {
+	display:block;
+	box-sizing:border-box;
+}
+.group_logo_container {
+	display:block;
+	box-sizing:border-box;
+	margin:0;
+	padding:42px 0;
+}
+.group_logo_container p {
+	display:block;
+	box-sizing:border-box;
+    text-align:center;
+	margin:0 20px 21px;
+    padding:0;
+    font-size:12px;
+	font-weight:400;
+	line-height:1.4;
+    color:rgba(255,255,255,0.8);
+}
+.group_logo_container ul {
+	display:block;
+	box-sizing:border-box;
+	list-style:none;
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+.group_logo_container ul li {
+    display:inline-block;
+    box-sizing:border-box;
+	margin:0 20px 20px;
+    padding:0;
+    background-size:122px,148px;
+    background-repeat:no-repeat;
+	list-style:none;
+}
+.group_logo_booking {
+	width:94px;
+    height:20px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 0;
+}
+.group_logo_kayak {
+	width:89px;
+    height:28px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 -40px;
+}
+.group_logo_opentable {
+	width:98px;
+    height:24px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 -126px;
+}
+.group_logo_princeline {
+	width:92px;
+    height:28px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 -16px;
+}
+.group_logo_agoda {
+	width:48px;
+    height:28px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 -70px;
+}
+.group_logo_rentalcars {
+	width:122px;
+    height:28px;
+    background-image:url(../images/main/pcln-group-logos.png);
+	background-position:0 -96px;
+}

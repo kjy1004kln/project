@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jhta.mybatis.mapper.hjy.Accommodations_tempMapperHjy">
+  	<select id="seq" resultType="int">
+		select seq_accommodations_temp.currval from dual
+	</select>
+  	<select id="find" resultType="com.jhta.project.vo.hjy.AccommodationsVo" parameterType="int">
+		select * from accommodations_temp where aid = #{aid}
+	</select>
+  	<insert id="insert" parameterType="com.jhta.project.vo.hjy.AccommodationsVo">
+  		insert into accommodations_temp values(seq_accommodations_temp.nextval,#{acate},#{aname},#{aaddress},#{aphone},#{axcoordi},#{aycoordi}
+  		,#{atotalroom},#{agrade},#{adetail},#{amainimg},sysdate,null)
+  	</insert>
+  	<delete id="delete" parameterType="int">
+		delete from accommodations_temp where aid = #{aid}
+	</delete>
+  </mapper>

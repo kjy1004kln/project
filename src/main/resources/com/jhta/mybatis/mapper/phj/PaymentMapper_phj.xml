@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.phj.PaymentMapper_phj">
+	<insert id="insertPayOk" parameterType="com.jhta.project.vo.phj.PaymentVo_phj">
+		insert into payment
+		values(seq_payment.nextval,#{pmethod},sysdate,#{ptotal},null,#{ptoken},
+		#{rid},#{mid})
+		
+	</insert>
+</mapper>

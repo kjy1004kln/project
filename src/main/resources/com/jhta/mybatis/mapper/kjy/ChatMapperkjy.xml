@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.ChatMapperkjy">
+	<select id="member" parameterType="string" resultType="com.jhta.project.vo.kjy.Chat_membersVo_kjy">
+		select * from chat_members where cmid=#{cmid}
+	</select>
+	<select id="buddy" parameterType="string" resultType="com.jhta.project.vo.kjy.Chat_membersVo_kjy">
+		select * from chat_buddy cb left join chat_members cm on cb.cbbuid=cm.cmid where cb.cmid=#{cmid} and cm.cmdrop is null
+	</select>
+	<select id="roomjoin" parameterType="hashmap" resultType="com.jhta.project.vo.kjy.Chat_roomjoinVo_kjy">
+		select * from chat_members cm, chat_roomjoin cr where cm.cmid=cr.cmid and cr.crid in
+		(select crid from chat_roomjoin where cmid=#{cmid} and crid=#{crid})and cm.cmid not in #{cmid} order by crid
+	</select>
+	<!-- 상태창 메세지 변경 -->
+ 	<update id="cmscname" parameterType="hashmap">
+		update chat_members set cmscname=#{cmscname} where cmid=#{cmid}
+	</update>
+	<select id="chat_message_recently" parameterType="string" resultType="com.jhta.project.vo.kjy.Chat_messageVo_kjy">
+		select rownum,msgid,msgmessage,to_char(msgtime,'YYYY-MM-DD') msgshottime,cmid,crid from chat_message where crid=#{crid} and not msgmessage is null and rownum=1 order by msgid desc
+	</select>
+	<select id="count" parameterType="string" resultType="hashmap">
+		select count(*) cnt, crid from chat_members cm, chat_roomjoin cr where cm.cmid=cr.cmid and cr.crid=#{crid} group by crid order by crid
+	</select>
+	<!-- 최신 대화한 방 정렬 -->
+	<select id="chat_rank" resultType="string" parameterType="string">
+		select crid from (select rank() over(PARTITION BY crid ORDER BY msgid desc) rnum, msgid, crid from chat_message 
+		where crid in(select crid from chat_message where cmid=#{cmid}))aa where aa.rnum=1 order by aa.msgid desc
+	</select>
+	
+	<!-- 안읽은 메세지 숫자 체크 -->
+	<select id="chat_msg_notread" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			select count(msgmessage) from chat_message where not cmid=#{cmid} and 
+			crid=#{crid} and msgtime > 
+			(select joincontime from chat_roomjoin where 
+			cmid=#{cmid} and crid=#{crid})
+		]]>
+	</select>
+	
+	<!-- 방이 있는지 체크 -->
+	<select id="roomcheck" parameterType="hashmap" resultType="com.jhta.project.vo.kjy.Chat_roomjoinVo_kjy">
+		select * from chat_roomjoin where crid in(select crid from chat_roomjoin where cmid=#{cmid}) and cmid=#{cbbuid}
+	</select>
+	<!-- 방이 있는대 인원이 3명이상일경우 체크 -->
+	<select id="roomcheck_cnt" parameterType="int" resultType="int">
+		select count(*) cnt from chat_roomjoin where crid=#{crid} group by crid
+	</select>
+	
+	<!-- 방이 없을경우 방생성 -->
+	<!-- 방금 생성한 시퀀스 번호 가져오기(방번호) -->
+	<insert id="chat_room_insert">
+		insert into chat_room values(seq_chat_room.nextval)
+	</insert>
+	<select id="room_seq" resultType="int">
+		select seq_chat_room.currval as crid from dual
+	</select>
+	<insert id="chat_roomjoin_insert" parameterType="hashmap">
+		insert into chat_roomjoin values(seq_chat_roomjoin.nextval,null,#{cmid},#{crid})
+	</insert>
+	<!-- 방생성시 시스템메세지 발송, 친구초대시 시스템메세지 발송 -->
+	<insert id="chat_message_system" parameterType="com.jhta.project.vo.kjy.Chat_messageVo_kjy">
+		insert into chat_message values(seq_chat_message.nextval,null,sysdate,#{msgsysmsg},#{cmid},#{crid})
+	</insert>
+	
+	<!-- 채팅 메세지 기능 -->
+	<!-- 채팅 메세지 저장 -->
+	<insert id="chat_message_insert" parameterType="com.jhta.project.vo.kjy.Chat_messageVo_kjy">
+		insert into chat_message values(seq_chat_message.nextval,#{msgmessage},sysdate,null,#{cmid},#{crid})
+	</insert>
+	<!-- 채팅 메세지 불러오기 -->
+	<select id="chat_message_list" parameterType="int" resultType="com.jhta.project.vo.kjy.Chat_messageVo_kjy">
+		select msgid, msgmessage,to_char(msgtime,'PM FMHH:MI:SS') msgshottime, msgsysmsg, cs.cmid, crid, cm.cmprofile,cm.cmname from chat_message cs inner join chat_members cm on cs.cmid=cm.cmid where crid=#{crid} order by msgid
+	</select>
+	<delete id="delete" parameterType="hashmap">
+		delete from chat_buddy where cbbuid=#{cbbuid} and cmid=#{cmid}
+	</delete>
+	
+	<!-- 방 아예 나가는 경우 기능 -->
+	<!-- 방나갈경우 채팅방메세지 테이블 id Unknown으로 변경 -->
+	<update id="chat_exit" parameterType="hashmap">
+		update chat_message set cmid='unknown' where cmid=#{cmid} and crid=#{crid}
+	</update>
+	<!-- 방나갈경우 채팅방연결 테이블 id Unknown으로 변경  -->
+	<update id="chat_exit_join" parameterType="hashmap">
+		update chat_roomjoin set cmid='unknown' where cmid=#{cmid} and crid=#{crid}
+	</update>
+	
+	<!-- 방에서 친구초대 기능 -->
+	<!-- 방에서 친구 추가로 초대할때 현재 들어온 인원은 제외하고 검색하기 -->
+	<select id="chat_add_check" parameterType="hashmap" resultType="com.jhta.project.vo.kjy.Chat_membersVo_kjy">
+		select * from chat_members where cmid in(select cbbuid from chat_buddy where cmid=#{cmid} and not cbbuid in(select cmid from chat_roomjoin where crid=#{crid} and not cmid=#{cmid}))
+	</select>
+	
+	<!-- 채팅방 종료시 마지막접속시간 업데이트 -->
+	<update id="chat_close" parameterType="hashmap">
+		update chat_roomjoin set joincontime=sysdate where cmid=#{cmid} and crid=#{crid}
+	</update>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.admin.MembersMapperHjy">
+	<select id="allMembers" resultType="int">
+		select count(*) cnt from members where mdrop is null
+	</select>
+	<select id="monthMembers" resultType="int">
+		select count(*) cnt from members where extract(month from mrdate) = extract(month from sysdate) and mdrop is null
+	</select>
+</mapper>

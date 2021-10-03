@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.lhj.Admin_AccommodationsMapperlhj">
+	<sql id="search">
+		<if test="field != null and field != ''">
+			where ${field} like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	<!-- 전체 갯수 -->
+	<select id="count" resultType="int">
+		select NVL(count(*),0) cnt from accommodations
+		<include refid="search"/>
+	</select>
+	<select id="accommlist" resultType="com.jhta.project.vo.lhj.AccommodationsVo">
+		select * from accommodations where aisdel is null order by aid desc
+	</select>
+	<select id="detail" parameterType="int" resultType="com.jhta.project.vo.lhj.AccommodationsVo">
+		select * from accommodations where aid=#{aid}
+	</select>
+	<select id="roomlist" parameterType="int" resultType="com.jhta.project.vo.lhj.Room_infoVo">
+		select * from room_info where aid=#{aid}
+	</select>
+	<select id="roomDetail" parameterType="int" resultType="com.jhta.project.vo.lhj.Room_infoVo">
+		select * from room_info where riid=#{riid}
+	</select>
+	<update id="accommUpdate" parameterType="com.jhta.project.vo.lhj.AccommodationsVo">
+		update accommodations set aname = #{aname}, aaddress = #{aaddress}, aphone = #{aphone}, atotalroom = #{atotalroom},
+		agrade = #{agrade}, adetail = #{adetail}
+		<if test="amainimg != null">
+			,amainimg = #{amainimg} 
+		</if>
+		where aid = #{aid}
+	</update>
+	<update id="roomUpdate" parameterType="com.jhta.project.vo.lhj.Room_infoVo">
+		update room_info set riroomtype = #{riroomtype}, riroom = #{riroom}, riservice = #{riservice}, risize = #{risize}, riminper = #{riminper},
+		rimaxper = #{rimaxper}, ripeak = #{ripeak}, risemipeak = #{risemipeak}, rioff = #{rioff}
+		<if test="rimainimg != null">
+			,rimainimg = #{rimainimg}
+		</if>
+		<if test="riextraimg1 != null">
+			,riextraimg1 = #{riextraimg1}
+		</if>
+		<if test="riextraimg2 != null">
+			,riextraimg2 = #{riextraimg2}
+		</if>
+		where riid = #{riid}
+	</update>
+	<update id="delupdate" parameterType="hashmap">
+		update accommodations set aisdel = 'Y' where aid= #{aid}
+	</update>
+</mapper>

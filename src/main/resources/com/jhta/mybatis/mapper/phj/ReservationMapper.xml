@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.phj.ReservationMapper">
+	<insert id="insertRes" parameterType="com.jhta.project.vo.phj.ReservationVo">
+		insert into reservation 
+		values(seq_reservation.nextval,#{rordernum},#{ramount},#{rroomnum},#{rcheckin},#{rcheckout},
+		#{rresname},#{rresphone},#{rresemail},#{rexbreaknum},#{rexbed},
+		#{rexperson},null,#{mid},#{riid})
+		
+		<selectKey keyProperty="rid" resultType="int" order="AFTER">
+        	SELECT SEQ_reservation.CURRVAL FROM DUAL
+    	</selectKey>
+	</insert>
+	<select id="selectRes" parameterType="String" resultType="com.jhta.project.vo.phj.ReservationVo">
+		select * from reservation where mid=#{mid}
+	</select> 
+</mapper>

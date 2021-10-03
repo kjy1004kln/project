@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.cjy.Admin_UserQnaMapperCjy">
+	<select id="list" resultType="com.jhta.project.vo.cjy.UserqnaVo">
+		        select * from userqna where not mid='admin' and qstep=0 order by qlev asc,qref desc,qstep asc,qrdate desc 
+	</select>
+	<select id="commentList" resultType="com.jhta.project.vo.cjy.UserqnaVo" parameterType="int">
+		        select * from userqna where qref=#{qref} and qstep=1
+	</select>
+	<insert id="insert" parameterType="com.jhta.project.vo.cjy.UserqnaVo">
+		insert into userqna values(seq_userqna.nextval,null,null,#{qtitle},#{qcontent},null,sysdate,#{qlev},#{qref},#{qstep},#{mid})
+	</insert>
+	<select id="test" resultType="com.jhta.project.vo.cjy.UserqnaVo" parameterType="String">
+		select * from userqna where qid=#{qid}
+	</select>
+	<update id="update" parameterType="com.jhta.project.vo.cjy.UserqnaVo">
+		update userqna set qtitle=#{qtitle},qcontent=#{qcontent},qrdate=sysdate,qlev=#{qlev},qstep=#{qstep},mid=#{mid} where qid=#{qid} and qref=#{qref} and qstep=1
+	</update>
+	<delete id="delete" parameterType="String">
+		delete from userqna where qid=#{qid}
+	</delete>
+	<update id="updatetoy" parameterType="String">
+		update userqna set qlev='Y' where qid=#{qid}
+	</update>
+		<update id="updateton" parameterType="String">
+		update userqna set qlev='N' where qid=#{qid}
+	</update>
+</mapper>

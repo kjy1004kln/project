@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.admin.PaymentMapperHjy">
+	<select id="monthlySales" resultType="int">
+		select sum(ptotal) from payment where extract(month from pdate) = extract(month from sysdate) and prefund is null 
+	</select>
+	<select id="annualSales" resultType="int">
+		select sum(ptotal) from payment where extract(year from pdate) = extract(year from sysdate) and prefund is null 
+	</select>
+	<select id="payType" resultType="com.jhta.project.vo.hjy.PaymentVo">
+		select pmethod,count(pmethod) cnt from payment where prefund is null  group by pmethod
+	</select>
+	<select id="month" resultType="int">
+		select extract(month from sysdate) month from dual
+	</select>
+	<select id="year" resultType="int">
+		select extract(year from sysdate) year from dual
+	</select>
+	<select id="salesChart" resultType="hashmap">
+		<![CDATA[
+			select lv,nvl(ptotal,0) ptotal from (SELECT
+			LPAD(LEVEL, 2, '0') LV
+			FROM DUAL CONNECT BY LEVEL <= 12)
+			cnt left outer join 
+			(select pdate,sum(ptotal) ptotal from (
+			select extract(month from pdate) pdate,ptotal from payment where extract(year from pdate) = extract(year from sysdate)
+			and prefund is null
+			)group by pdate) payment
+			on cnt.lv=payment.pdate order by lv
+		]]>
+	</select>
+	<select id="reservationRate" resultType="hashmap">
+		<![CDATA[
+		      select fin.aname,round((fin.cnt/(ac.atotalroom*(LAST_DAY(sysdate)-ADD_MONTHS(TRUNC(sysdate,'MM'), 
+	  -0
+	  )))*100),3) per ,fin.cnt,ac.atotalroom
+      from(
+      select ac.aid,ac.aname,cnt from (select ac.aid,count(rs.riid)cnt from accommodations ac ,reservation rs,room_info ri
+      where ac.aid = ri.aid and ri.riid=rs.riid  and rs.rcancel is null and rs.rcheckin>=TRUNC(add_months(sysdate, 
+      -0
+      ), 'MM') group by ac.aid ) test 
+      left outer join accommodations ac on test.aid=ac.aid
+      )fin, accommodations ac where fin.aid=ac.aid order by per desc
+		]]>
+	</select>
+	  <select id="find" resultType="com.jhta.project.vo.hjy.PaymentVo" parameterType="string">
+      	select * from payment where rid = #{rid}
+      </select>
+</mapper>

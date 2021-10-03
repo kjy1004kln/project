@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.lhj.Admin_PaymentMapperlhj">
+	<sql id="search">
+		<if test="field != null and field != ''">
+			where ${field} like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	<!-- 전체 갯수 -->
+	<select id="count" resultType="int">
+		select NVL(count(*),0) cnt from accommodations
+		<include refid="search"/>
+	</select>
+	<select id="paymentlist" resultType="com.jhta.project.vo.lhj.PaymentVo">
+		select * from payment where prefund is null order by pid desc
+	</select>
+</mapper>

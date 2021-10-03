@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.jhr.MembersMapper">
+	<insert id="insert" parameterType="com.jhta.project.vo.jhr.MembersVo">
+		<if test="mprofile!=null">
+			insert into members values(#{mid},#{mpw},#{mname},#{mphone},#{memail},sysdate,#{mbirth},#{mprofile},null)
+		</if>
+		<if test="mprofile==null">
+			insert into members values(#{mid},#{mpw},#{mname},#{mphone},#{memail},sysdate,#{mbirth},null,null)
+		</if>
+	</insert>
+	<insert id="insert2" parameterType="com.jhta.project.vo.jhr.MembersVo">
+		insert into favorite values(seq_favorite.nextval,null,null,null,#{mid})
+	</insert>
+	<insert id="insert3" parameterType="com.jhta.project.vo.jhr.Chat_membersVo">
+		insert into chat_members values(#{cmid},#{cmname},#{cmbirth},#{cmprofile},null,null)
+	</insert>
+	<select id="isMember" parameterType="hashmap" resultType="com.jhta.project.vo.jhr.MembersVo">
+		select * from members where mid=#{mid} and mpw=#{mpw}
+	</select>
+	<select id="findId" parameterType="hashmap" resultType="com.jhta.project.vo.jhr.MembersVo">
+		select * from members where mname=#{mname} and memail=#{memail}
+	</select>
+	<select id="checkPw" parameterType="hashmap" resultType="com.jhta.project.vo.jhr.MembersVo">
+		select * from members where mid=#{mid} and mname=#{mname} and mphone=#{mphone} and memail=#{memail} and mbirth=#{mbirth}
+	</select>
+	<update id="resetPw" parameterType="com.jhta.project.vo.jhr.MembersVo">
+		update members set mpw=#{mpw} where mid=#{mid}
+	</update>
+	<select id="checkId" parameterType="string" resultType="com.jhta.project.vo.jhr.MembersVo">
+		select * from members where mid=#{mid}
+	</select>
+	<update id="update" parameterType="com.jhta.project.vo.jhr.MembersVo">
+		update members set mname=#{mname}, mphone=#{mphone}, memail=#{memail}, mbirth=#{mbirth}<if test="mprofile!=null">, mprofile=#{mprofile}</if> where mid=#{mid}
+	</update>
+	<select id="find" parameterType="string" resultType="com.jhta.project.vo.jhr.MembersVo">
+		select * from members where mid=#{mid}
+	</select>
+	<delete id="delete" parameterType="com.jhta.project.vo.jhr.MembersVo">
+		delete from members where mid={mid}
+	</delete>
+</mapper>

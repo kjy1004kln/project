@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.Additional_fee_tempMapperHjy">
+	<select id="seq" resultType="int">
+		select seq_additional_fee_temp.currval from dual
+	</select>
+	<select id="find" resultType="com.jhta.project.vo.hjy.Additional_feeVo" parameterType="int">
+		select * from room_info_temp where riid = #{riid}
+	</select>
+	<insert id="insert" parameterType="com.jhta.project.vo.hjy.Additional_feeVo">
+		insert into additional_fee_temp values(seq_additional_fee_temp.nextval,#{afpersonnel},#{afbreakfast},#{afbed},#{riid})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from additional_fee_temp where riid = #{riid}
+	</delete>
+</mapper>

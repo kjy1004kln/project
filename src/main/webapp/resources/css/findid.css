@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+* { 
+	margin:0;
+	padding:0;
+}
+
+body {
+	min-width: 20em;
+	display:block;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+	font-family:Brezel Grotesk,Helvetica Neue,Helvetica,Arial,sans-serif; 
+}
+
+/*findid*/
+.findid {
+	display:block;
+	box-sizing:border-box;
+	marging:0;
+	padding:0;
+}
+.findid_container {
+    max-width:1000px;
+	display:block;
+	box-sizing:border-box;
+	margin:0 auto;
+    padding:100px 0;
+}
+.toparea {
+	display:block;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+	margin-bottom:65px;
+}
+.title {
+    font-size:28px;
+    font-weight:100;
+    line-height:32px;
+    color:#000;
+    word-break:break-all;
+	margin-bottom:38px;
+	padding:8px 0;
+}
+.headline {
+    font-size:42px;
+    font-weight:100;
+    line-height:54px;
+    color:#000;
+    letter-spacing:-0.05em;
+	margin:0 0 10px;
+    word-break:break-all;
+}
+
+.find_id {
+	display:block;
+	box-sizing:border-box;
+	marging:0;
+	padding:0;
+}
+.find_id h3 {
+	font-size:17px;
+	font-weight:normal;
+    color:#000;
+    padding-bottom:5px;
+	border-bottom:1px solid #000;
+}
+.findid1 {
+    width:100%;
+	display:table;
+	box-sizing:border-box;
+    table-layout:fixed;
+	padding:20px 0;
+    border-bottom:1px solid #d0d0d0;
+}
+.findid_col1 {
+	width:160px;
+    display:table-cell;
+	box-sizing:border-box;
+    vertical-align:top;
+    font-size:15px;
+    line-height:34px;
+    letter-spacing:-0.05em;
+    color:#8a8a8a;
+}
+.findid_col_input {
+    display:table-cell;
+	box-sizing:border-box;
+	color:#8a8a8a;
+}
+.input_wrap {
+	display:block;
+	box-sizing:border-box;
+	marging:0;
+	padding:0;
+}
+.wrap_inner {
+	display:block;
+	box-sizing:border-box;
+	marging:0;
+	padding:0;
+}
+.ui_input {
+    width:100%;
+    max-width:462px;
+    display:inline-block;
+	margin:0 6px 0 0;
+	padding:0;
+	position:relative;
+    vertical-align:top;
+    background-color:#f0f0f0;
+}
+.input_space {
+    width:462px;
+    height:34px;
+    display:inline-block;
+	box-sizing:border-box;
+	cursor:text;
+	position:relative;
+    padding:0 10px;
+    font-size:14px;
+    line-height:34px;
+    border:0;
+    background-color:#f0f0f0;
+    opacity:1;
+    z-index:1;
+}
+.input_space:focus {
+	outline: 1px solid #ee1c25;
+	background-color:#fff;
+	opaticy:1;
+}
+.input_space::placeholder {
+    font-size:13.125px;
+    line-height:34px;
+    color:#8a8a8a;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+.submit_container {
+	width:100%;
+	display:block;
+	box-sizing:border-box;
+	marging:0;
+	padding:0;
+	text-align:center;
+}
+.submit_btn {
+    min-width:9.375em;
+    height:40px;
+    display: inline-block;
+    align-items:flex-start;
+    text-align:center;
+    vertical-align:top;
+    line-height:40px;
+	padding:0 10px;
+	margin:0 auto;
+	margin-top:80px;
+	color:#fff;
+    background-color:#00aef0;
+    border:none;
+    border-radius:2px;
+}
+
+.point_color {
+	color: #ee1c25;
+	margin-right:3px;
+}
+.errmsg {
+	display:block;
+    box-sizing:border-box;
+    color:red;
+    font-size:17px;
+    line-height:25px;
+    margin-top:20px;
+}

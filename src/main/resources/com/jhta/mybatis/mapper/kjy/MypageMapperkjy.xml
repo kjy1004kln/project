@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.MypageMapperkjy">
+	<select id="list" resultType="com.jhta.project.vo.kjy.MypageVo_kjy" parameterType="string">
+		select * from members where mid=#{mid}
+	</select>
+	<update id="profiledel" parameterType="string">
+		update members set mprofile=null where mid=#{mid}
+	</update>
+	<update id="profileup" parameterType="hashmap">
+		update members set mprofile=#{mprofile} where mid=#{mid}
+	</update>
+</mapper>

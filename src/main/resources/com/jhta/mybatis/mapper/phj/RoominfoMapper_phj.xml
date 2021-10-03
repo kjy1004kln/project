@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.phj.RoominfoMapper_phj">
+	<select id="selectRoom" parameterType="int" resultType="com.jhta.project.vo.phj.RoominfoVo_phj">
+		select * from room_info where riid=#{riid}
+	</select>
+</mapper>

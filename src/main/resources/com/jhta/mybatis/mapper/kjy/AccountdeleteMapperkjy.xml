@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.AccountdeleteMapperkjy">
+	<select id="mpwcheck" parameterType="string" resultType="string">
+		select mpw from members where mid=#{mid}
+	</select>
+	<update id="memberdel" parameterType="string">
+		update members set mdrop='Y' where mid=#{mid}
+	</update>
+</mapper>

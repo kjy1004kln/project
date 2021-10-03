@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.phj.BoardMapper_phj">
+	<update id="updateBoard" parameterType="com.jhta.project.vo.phj.BoardVo_phj">
+		update board set bcate=#{bcate},btitle=#{btitle},bcontent=#{bcontent},brdate=#{brdate},bfile1=#{bfile1, jdbcType=VARCHAR},
+		bfile2=#{bfile2, jdbcType=VARCHAR},bfile3=#{bfile3, jdbcType=VARCHAR},mid=#{mid} where bid=#{bid}
+	</update>
+	<delete id="deleteBoard" parameterType="int">
+		delete from board where bid=#{bid}
+	</delete>
+	<insert id="insertBoard" parameterType="com.jhta.project.vo.phj.BoardVo_phj">
+		insert into board
+		values(seq_board.nextval,#{bcate},#{btitle},#{bcontent},
+		sysdate,#{bfile1, jdbcType=VARCHAR},#{bfile2, jdbcType=VARCHAR},#{bfile3, jdbcType=VARCHAR},#{mid})
+	</insert>
+	<select id="selectBoardAll" resultType="com.jhta.project.vo.phj.BoardVo_phj">
+		select * from board
+	</select>
+
+	<sql id="search_phj">
+		<if test="field!=null and field!=''">
+			and ${field} like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	<select id="count_phj" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from board where mid=#{mid}
+		<include refid="search_phj" />
+	</select>
+	<select id="selectBoardMine" parameterType="hashmap"
+		resultType="com.jhta.project.vo.phj.BoardVo_phj">
+		select* from
+		(
+		select aa.*, rownum rnum from
+		(
+		select bid,bcate,btitle,brdate,mid from board where mid=#{mid}
+		<include refid="search_phj" />
+		order by bid desc
+		)aa
+		<![CDATA[) where rnum>=#{startRow} and rnum<=#{endRow}]]>
+	</select>
+	
+	<select id="count_phj_cate" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from board where mid=#{mid} and bcate=#{bcate}
+		<include refid="search_phj" />
+	</select>
+	<select id="selectBoardcate" parameterType="hashmap"
+		resultType="com.jhta.project.vo.phj.BoardVo_phj">
+		select* from
+		(
+		select aa.*, rownum rnum from
+		(
+		select bid,bcate,btitle,brdate,mid from board where mid=#{mid} and bcate=#{bcate}
+		<include refid="search_phj" />
+		order by bid desc
+		)aa
+		<![CDATA[) where rnum>=#{startRow} and rnum<=#{endRow}]]>
+	</select>
+</mapper>

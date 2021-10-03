@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.Additional_feeMapperHjy">
+	<select id="seq" resultType="int">
+		select seq_additional_fee.currval from dual
+	</select>
+	<insert id="insert" parameterType="com.jhta.project.vo.hjy.Additional_feeVo">
+		insert into additional_fee values(seq_additional_fee.nextval,#{afpersonnel},#{afbreakfast},#{afbed},#{riid})
+	</insert>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jhta.mybatis.mapper.hjy.chat.ChatBuddyMapperHjy">
+  	<insert id="buddyInsert" parameterType="com.jhta.project.vo.hjy.ChatBuddyVo">
+  		insert into chat_buddy values(seq_chat_buddy.nextval,#{cbbuid},#{cmid})
+  	</insert>
+  	<select id="chatBuddyList" resultType="com.jhta.project.vo.hjy.ChatBuddyVo" parameterType="string">
+  		select cbid,cbbuid,cmid from chat_buddy where cmid=#{cmid}
+  	</select>
+  </mapper>

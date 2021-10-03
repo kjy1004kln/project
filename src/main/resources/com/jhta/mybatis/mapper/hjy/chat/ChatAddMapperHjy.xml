@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.jhta.mybatis.mapper.hjy.chat.ChatAddMapperHjy">
+  	<insert id="friendReqInsert" parameterType="com.jhta.project.vo.hjy.ChatAddVo">
+  		insert into chat_add values(seq_chat_add.nextval,#{caaddid},#{cmid})
+  	</insert>
+  	<select id="chatAddList" resultType="com.jhta.project.vo.hjy.ChatAddVo" parameterType="string">
+		select ca.caid,ca.caaddid,ca.cmid,cm.cmprofile from chat_add ca, chat_members cm where ca.cmid=#{cmid} and ca.caaddid=cm.cmid
+  	</select>
+  	<select id="isexist" resultType="int" parameterType="com.jhta.project.vo.hjy.ChatAddVo">
+  		select count(caid) from chat_add where cmid=#{cmid} and caaddid=#{caaddid}
+  	</select>
+  	<delete id="delete" parameterType="hashmap">
+  		delete from chat_add where caaddid=#{caaddid} and cmid=#{cmid}
+  	</delete>
+  </mapper>

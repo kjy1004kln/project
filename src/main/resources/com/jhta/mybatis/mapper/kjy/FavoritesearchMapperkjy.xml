@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.FavoritesearchMapperkjy">
+	<select id="hotelsearch" resultType="com.jhta.project.vo.kjy.FavoritesearchVo_kjy" parameterType="string">
+		select * from hotelchain where krchainname like '%'||#{hotel}||'%' or engchainname like '%'||#{hotel}||'%'
+	</select>
+	<select id="airlinesearch" resultType="com.jhta.project.vo.kjy.FavoritesearchVo_kjy" parameterType="string">
+		select * from airline where airname like '%'||#{airname}||'%'
+	</select>
+	<select id="airportsearch" resultType="com.jhta.project.vo.kjy.FavoritesearchVo_kjy" parameterType="string">
+		select * from airport where portname like '%'||#{portname}||'%'
+	</select>
+</mapper>

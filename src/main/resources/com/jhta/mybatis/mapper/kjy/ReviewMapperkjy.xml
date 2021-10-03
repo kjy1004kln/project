@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.ReviewMapperkjy">
+	<select id="list" resultType="com.jhta.project.vo.kjy.ReviewVo_kjy" parameterType="hashmap">
+		<![CDATA[
+        select * from
+		(
+			select aa.*,rownum rnum from
+			(    
+            select r.reid,r.retitle,r.recontent,r.rephoto,r.rerdate,r.restar,REPLACE(r.mid, SUBSTR(r.mid,-4),'****') AS mid from review r 
+                inner join reservation re on r.rid=re.rid 
+                inner join room_info ri on re.riid=ri.riid
+                where ri.aid=#{aid}
+                order by reid desc
+           )aa
+        ) where rnum>=#{startRowNum} and rnum<=#{endRowNum} 
+        ]]>
+	</select>
+	<select id="sumstar" resultType="hashmap" parameterType="int">
+		select FLOOR(sum(r.restar)/count(*)) AS sumstar, count(*) cnt from review r 
+		inner join reservation re on r.rid=re.rid 
+		inner join room_info ri on re.riid=ri.riid
+		where ri.aid=#{aid}
+	</select>
+	<select id="count" parameterType="int" resultType="int">
+		select count(*) cnt from review r 
+		inner join reservation re on r.rid=re.rid 
+		inner join room_info ri on re.riid=ri.riid
+		where ri.aid=#{aid}
+	</select>
+	<select id="reviewin" parameterType="int" resultType="hashmap">
+		select ac.aname,ri.riroomtype,ri.rimainimg from reservation 
+		re, room_info ri,accommodations ac where re.riid=ri.riid and ri.aid=ac.aid
+		and re.rid=#{rid}
+	</select>
+	<insert id="reviewinsert" parameterType="com.jhta.project.vo.kjy.ReviewVo_kjy">
+		insert into review values(seq_review.nextval,#{retitle},#{recontent},#{rephoto},sysdate,#{restar},#{mid},#{rid})
+	</insert>
+</mapper>

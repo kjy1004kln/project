@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.admin.ReservationMapperHjy">
+	<select id="hotelReserRate" resultType="com.jhta.project.vo.hjy.ReservationRateVo" parameterType="string">
+	  select fin.aname,TO_CHAR(round((fin.cnt/(ac.atotalroom*(LAST_DAY(sysdate)-ADD_MONTHS(TRUNC(sysdate,'MM'), 
+	  -#{time}
+	  )))*100),3),'FM9990.999')||'%' per ,fin.cnt,ac.atotalroom
+      from(
+      select ac.aid,ac.aname,cnt from (select ac.aid,count(rs.riid)cnt from accommodations ac ,reservation rs,room_info ri
+      where ac.aid = ri.aid and ri.riid=rs.riid and rs.rcancel is null and rs.rcheckin>=TRUNC(add_months(sysdate, 
+      -#{time}
+      ), 'MM') group by ac.aid ) test 
+      left outer join accommodations ac on test.aid=ac.aid
+      )fin, accommodations ac where fin.aid=ac.aid 
+	</select>
+	
+	<select id="roomReserRate" resultType="com.jhta.project.vo.hjy.ReservationRateVo" parameterType="string">      
+      select aname,riroomtype,TO_CHAR(round((fin.cnt/(ac.atotalroom*(LAST_DAY(sysdate)-ADD_MONTHS(TRUNC(sysdate,'MM'), 
+      -#{time}
+      )))*100),3),'FM9990.999')||'%' per
+       from(
+      select ri.riid,cnt,ri.riroomtype,ri.riroom,aid from (select ri.riid,count(rs.riid)cnt from accommodations ac ,reservation rs,room_info ri
+      where ac.aid = ri.aid and ri.riid=rs.riid and rs.rcancel is null and rs.rcheckin>=TRUNC(add_months(sysdate, 
+      -#{time}
+      ), 'MM') group by ri.riid ) test 
+      left outer join room_info ri on test.riid=ri.riid
+      )fin, accommodations ac where fin.aid=ac.aid
+      </select>
+
+</mapper>

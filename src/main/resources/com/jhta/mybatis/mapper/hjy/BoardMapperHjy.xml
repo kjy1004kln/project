@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.hjy.BoardMapperHjy">
+	<sql id="search">
+		<if test="field!=null and field!=''">
+			and ${field} like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int" parameterType="hashmap">
+		select NVL(count(*),0) cnt from board where bcate=#{bcate}
+		<include refid="search" />
+	</select>
+	<select id="list" parameterType="hashmap"
+		resultType="com.jhta.project.vo.hjy.BoardVo">
+		select* from
+		(
+		select aa.*, rownum rnum from
+		(
+		select bid,bcate,btitle,brdate,mid from board where bcate=#{bcate}
+		<include refid="search" />
+		order by bid desc
+		)aa
+		<![CDATA[) where rnum>=#{startRow} and rnum<=#{endRow}]]>
+	</select>
+	
+	<select id="detail" resultType="com.jhta.project.vo.phj.BoardVo_phj"
+		parameterType="int">
+		select bid,bcate,btitle,bcontent,brdate,bfile1,bfile2,bfile3,mid from board where bid = #{bid}
+	</select>
+	
+	<select id="prev" parameterType="int" resultType="com.jhta.project.vo.hjy.BoardVo">
+		<![CDATA[
+		select * from
+		(
+		    select * from board where bid<${bid} order by bid desc
+		)where rownum=1
+		]]>
+	</select>
+	<select id="next" parameterType="int" resultType="com.jhta.project.vo.hjy.BoardVo">
+		<![CDATA[
+		select * from
+		(
+		    select * from board where bid>${bid} order by bid asc
+		)where rownum=1
+		]]>
+	</select>
+</mapper>

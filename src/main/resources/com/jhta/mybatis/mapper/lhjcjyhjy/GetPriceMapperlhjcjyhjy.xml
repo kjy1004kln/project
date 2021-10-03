@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.jhta.mybatis.mapper.lhjcjyhjy.GetPriceMapperlhjcjyhjy">
+
+	<select id="getprice" parameterType="hashmap"
+		resultType="com.jhta.project.vo.lhjcjy.AccommodationsVolhjcjy">
+	<![CDATA[
+        	select * from (select fin.*, ROW_NUMBER() OVER(PARTITION BY aname ORDER BY aname, amountsum) rnum from(        
+			select (amountSum+GREATEST(addfee.exper,0))amountsum,star restar, ri.riid, ri.riroom,ri.RISERVICE,ri.RISIZE,ri.RIMINPER,ri.RIMAXPER,ri.RIMAINIMG,ri.RIEXTRAIMG1,ri.RIEXTRAIMG2,ri.aid,ac.aname,ac.amainimg,ac.aaddress,ac.axcoordi,ac.aycoordi,ac.aphone,ac.agrade from (
+        		select riid, sum(amount) amountSum from(
+        			select fin.* ,
+        			case when peseason ='성수기' then ripeak when peseason ='준성수기' then risemipeak when peseason ='비수기' then rioff end as amount
+        			from
+        			(select a.*,dt.ds from 
+            		( select pr.pestart, pr.peend, pr.peseason, ri.riid, ri.ripeak, ri.risemipeak, ri.rioff from room_info ri left outer join
+           			(select ri.riid from review r, reservation re, room_info ri where r.rid=re.rid and re.riid=ri.riid group by ri.riid) cnt
+            		on ri.riid=cnt.riid left outer join accommodations ac on ac.aid=ri.aid left outer join period pr on pr.aid=ac.aid) a,date_t dt  
+            		where ds >=#{rcheckin} and ds <=#{rcheckout}) fin
+            	where to_date(ds,'yy/mm/dd')>=pestart and to_date(ds,'yy/mm/dd')<=peend)
+        		group by riid) finfin, room_info ri, accommodations ac, 
+        		(select aid,floor(sum(star)/count(star)) star from (
+		        select riid,star,aid from (
+		        (select ri.riid ,cnt.star star,ac.aid from room_info ri left outer join
+		        (select nvl(avg(r.restar),0) star,ri.riid from review r,reservation re, room_info ri where r.rid=re.rid and re.riid=ri.riid group by ri.riid) cnt
+		        on ri.riid=cnt.riid left outer join accommodations ac on ac.aid=ri.aid left outer join period pr on pr.aid=ac.aid)) group by riid,star,aid
+		        )group by aid) star,
+     			(select ri.riid,(af.afpersonnel*(#{rimaxper}-ri.riminper))exper from additional_fee af,room_info ri where af.riid=ri.riid) addfee
+        		where star.aid=ac.aid 
+        		and ri.riid=finfin.riid 
+        		and ac.aid = ri.aid 
+        		and addfee.riid(+)=ri.riid
+        		and ac.aisdel is null 
+        		and ri.riroom-(select count(rcheckin) from reservation where rcheckin <= #{rcheckin} 
+        		and rcheckout >= #{rcheckout} and rcancel is null)>=#{countRoom}
+        		and ri.rimaxper>= #{rimaxper}
+        		and (ac.aaddress like '%'||#{aaddress}||'%' or ac.aname like '%'||#{aname}||'%'))fin) 
+        		where rnum = 1 
+        ]]>
+		<if test="maxprice!=null">
+			<![CDATA[
+			and amountsum<=#{maxprice} and amountsum>=#{minprice}
+			]]>
+		</if>
+		<if test="facilities!=null">
+			<foreach collection="facilities" item="arr">
+				and riservice like '%'||#{arr}||'%'
+			</foreach>
+		</if>
+		<if test="firstbookmark!=null">
+				and (aname like '%'||#{firstbookmark}||'%'
+		</if>
+		<if test="bookmark!=null">
+			<foreach collection="bookmark" item="bookmark">
+				or aname like '%'||#{bookmark}||'%'
+			</foreach>
+			)
+		</if>
+		<if test="autoaname!=null">
+			and aname like '%'||#{autoaname}||'%'
+		</if>
+		<if test="restar!=null">
+			and NVL(restar,0)>=#{restar}
+		</if>
+		<if test="agrade!=null">
+            and NVL(agrade,0)>=#{agrade}
+		</if>
+	</select>
+</mapper>

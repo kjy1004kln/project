@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.FavoriteMapperkjy">
+	<select id="list" parameterType="string" resultType="com.jhta.project.vo.kjy.FavoriteVo_kjy">
+		select * from favorite where mid=#{mid}
+	</select>
+	<update id="airportup" parameterType="hashmap">
+		update favorite set favairport=#{airport} where mid=#{mid}
+	</update>
+	<update id="airlineup" parameterType="hashmap">
+		update favorite set favairline=#{airline} where mid=#{mid}
+	</update>
+	<update id="hotelup" parameterType="hashmap">
+		update favorite set favhotel=#{hotel} where mid=#{mid}
+	</update>
+</mapper>

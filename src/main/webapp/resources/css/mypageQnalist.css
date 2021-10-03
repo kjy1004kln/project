@@ -1,0 +1,55 @@
+@charset "UTF-8";
+* {
+	margin:0;
+	padding:0;
+	font-family: 'Stylish', sans-serif;
+}
+
+#qnalist{
+	width:1000px !important;
+	border:none;
+}
+#qnapage{
+	margin-left:500px;
+	margin-top:20px;
+}
+#category{
+	margin:20px 0;
+}
+th {
+	text-align:center !important;
+	padding:5px !important;
+}
+td {
+	padding:5px !important;
+}
+.widlen {
+	width:64px !important;
+}
+.widlen2 {
+	width:70px !important;
+}
+.widlen3 {
+	width:271.5px !important;
+	height:31px !important;
+}
+.widcon {
+	width:266.172px !important;
+	height:19px !important;
+	display:inline-block;
+	line-height:22px;
+	white-space:nowrap !important;
+	overflow:hidden !important;
+	text-overflow:ellipsis !important;
+	margin:0;
+	/*text-overflow:clip !important;*/
+}
+.widcate {
+	width:81px !important;
+}
+.widdate {
+	width:86px !important;
+}
+.cate {
+	text-align:center !important;
+}

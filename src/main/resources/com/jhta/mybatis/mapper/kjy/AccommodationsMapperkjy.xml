@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.AccommodationsMapperkjy">
+	<select id="aidlist" resultType="com.jhta.project.vo.kjy.AccommodationsVo_kjy" parameterType="int">
+		select * from accommodations where aid=#{aid1}
+	</select>
+</mapper>

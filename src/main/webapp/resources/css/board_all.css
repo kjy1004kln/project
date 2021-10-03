@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+* { 
+	margin:0;
+	padding:0;
+}
+
+body {
+	min-width: 20em;
+	display:block;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+	font-family:Brezel Grotesk,Helvetica Neue,Helvetica,Arial,sans-serif; 
+}
+
+.board_content {
+	width:80%;
+	display:block;
+	margin:0 auto;
+	margin-bottom:50px;
+}
+
+/*테이블*/
+.table {
+	margin:0 !important;
+	margin:50px 0 20px 0 !important;
+}
+.table_title {
+	border-top:1px solid #ddd !important;
+}
+th {
+	text-align:center !important;
+	border:none !important;
+}
+.table_date {
+	width:140px !important;
+}
+.table_writer {
+	width:140px !important;
+}
+.table_content {
+	border-bottom:1px solid #ddd;
+}
+.tdalign {
+	text-align:center;
+}
+
+/*하단*/
+.other_content {
+	height:34px;
+	display:flex;
+	flex-direction:row;
+	position:relative;
+	margin-bottom:30px;
+}
+.writebtn {
+	padding:6px 14px !important;
+	position:absolute;
+	left:0;
+}
+.pagebox {
+	position:absolute;
+	left:50%;
+}
+.searchbox {
+	width:350px;
+	display:flex;
+	flex-direction:row;
+	margin:0 auto;
+}
+.box_margin {
+	margin-right:10px;
+}
+.submitbtn {
+	padding:6px 14px !important;
+}

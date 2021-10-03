@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.kjy.Room_infoMapperkjy">
+	<select id="list" resultType="com.jhta.project.vo.kjy.Room_infoVo_kjy" parameterType="hashmap">
+		<!-- 
+		SELECT f.* FROM(
+            SELECT e.*, DENSE_RANK() OVER(ORDER BY length(e.reday) desc) AS rank  FROM(
+            SELECT d.riid, d.riroomtype, d.riroom,d.riservice,d.risize,d.riminper,d.rimaxper,d.ripeak,d.risemipeak,d.rioff,d.rimainimg,d.riextraimg1,d.riextraimg2,d.aid, LISTAGG(d.ds,',') WITHIN GROUP (ORDER BY d.ds) AS reday, d.resernum FROM(
+				SELECT b.*
+     				, a.ds
+                    , NVL(SUM(TRANSLATE(c.rcancel,'N','1')),0) AS 예약인원수
+     				, b.riroom - NVL(SUM(TRANSLATE(c.rcancel,'N','1')),0) AS resernum
+ 				 FROM (SELECT ds
+          	FROM date_t
+         	WHERE ds BETWEEN #{startday} AND #{endday}
+        	) a
+ 			CROSS JOIN
+       		(SELECT x.*
+          	FROM room_info x
+         	INNER JOIN accommodations y
+            ON x.aid = y.aid
+         	WHERE 1=1 and x.aid=#{aid}
+        	) b
+  			LEFT OUTER JOIN reservation c
+    		ON b.riid = c.riid
+   			AND a.ds BETWEEN c.rcheckin AND c.rcheckout
+ 			GROUP BY b.riid, b.riroomtype, b.riroom, b.riservice, b.risize, b.riminper,b.rimaxper,b.ripeak,b.risemipeak,b.rioff,b.rimainimg,b.riextraimg1,b.riextraimg2,b.aid,a.ds
+			HAVING b.riroom - NVL(SUM(TRANSLATE(c.RCANCEL,'N','1')),0) >= #{roomnum} and rimaxper >=#{person}
+			order by count(b.RIID) over(PARTITION BY a.ds),a.ds
+		) d group by d.resernum , d.riid, d.riroomtype, d.riroom,d.riservice,d.risize,d.riminper,d.rimaxper,d.ripeak,d.risemipeak,d.rioff,d.rimainimg,d.riextraimg1,d.riextraimg2,d.aid
+        ) e )f where rank=1
+        -->
+        <![CDATA[
+		SELECT f.* FROM(
+            SELECT e.*, DENSE_RANK() OVER(ORDER BY length(e.reday) desc) AS rank  FROM(
+            SELECT d.riid, d.riroomtype, d.riroom,d.riservice,d.risize,d.riminper,d.rimaxper,d.ripeak,d.risemipeak,d.rioff,d.rimainimg,d.riextraimg1,d.riextraimg2,d.aid, LISTAGG(d.ds,',') WITHIN GROUP (ORDER BY d.ds) AS reday, d.resernum FROM(
+				SELECT b.*
+     				, a.ds
+                    , (select count(*) from (
+						select nvl(rcancel,'N') as num from reservation)where num='N') AS 예약인원수
+     				, b.riroom - (select count(*) from (
+						select nvl(rcancel,'N') as num from reservation)where num='N') AS resernum
+ 				 FROM (SELECT ds
+          	FROM date_t
+         	WHERE ds BETWEEN #{startday} AND #{endday}
+        	) a
+ 			CROSS JOIN
+       		(SELECT x.*
+          	FROM room_info x
+         	INNER JOIN accommodations y
+            ON x.aid = y.aid
+         	WHERE 1=1 and x.aid=#{aid}
+        	) b
+  			LEFT OUTER JOIN reservation c
+    		ON b.riid = c.riid
+   			AND a.ds BETWEEN c.rcheckin AND c.rcheckout
+ 			GROUP BY b.riid, b.riroomtype, b.riroom, b.riservice, b.risize, b.riminper,b.rimaxper,b.ripeak,b.risemipeak,b.rioff,b.rimainimg,b.riextraimg1,b.riextraimg2,b.aid,a.ds
+			HAVING b.riroom - (select count(*) from (
+			select nvl(rcancel,'N') as num from reservation)where num='N') >= #{roomnum} and rimaxper >= #{person}
+			order by count(b.RIID) over(PARTITION BY a.ds),a.ds
+			) d group by d.resernum , d.riid, d.riroomtype, d.riroom,d.riservice,d.risize,d.riminper,d.rimaxper,d.ripeak,d.risemipeak,d.rioff,d.rimainimg,d.riextraimg1,d.riextraimg2,d.aid
+        	) e )f where rank=1
+        	]]>
+	</select>
+	<select id="daylist" resultType="string" parameterType="hashmap">
+		SELECT LISTAGG(ds,',') WITHIN GROUP (ORDER BY ds) as ds FROM date_t WHERE ds BETWEEN #{startday} AND #{endday}
+	</select>
+	<select id="personnel" resultType="int" parameterType="int">
+		select NVL(af.afpersonnel,0) afpersonnel from room_info ri left join additional_fee af on ri.riid=af.riid where ri.riid=#{riid}
+	</select>
+</mapper>

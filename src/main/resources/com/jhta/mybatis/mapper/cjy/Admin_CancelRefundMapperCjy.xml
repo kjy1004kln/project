@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta.mybatis.mapper.cjy.Admin_CancelRefundMapperCjy">
+
+	<select id="list"  resultType="com.jhta.project.vo.cjy.RsvPaymentVo">
+		select rv.*,pm.pmethod,pm.pdate ,pm.ptotal, pm.prefund  from reservation rv, payment pm where rv.rid=pm.rid and (pm.prefund='N' or pm.prefund is null) and rv.rcancel='Y' order by rv.rid desc
+	</select>
+	<update id="update" parameterType="map">
+		update payment set prefund='Y' where rid=#{rid}
+	</update>
+</mapper>
